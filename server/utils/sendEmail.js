@@ -7,13 +7,8 @@ const sendEmail = async (options) => {
     if (process.env.EMAIL_USER === 'your_user' || !process.env.EMAIL_USER) {
         // Create a test account (Ethereal)
         const testAccount = await nodemailer.createTestAccount();
-
-        console.log('Using Ethereal Test Account...');
-        console.log(`User: ${testAccount.user}`);
-        console.log(`Pass: ${testAccount.pass}`);
-
         transporter = nodemailer.createTransport({
-            host: 'smtp.ethereal.email',
+            host: 'smtp.gmail.com',
             port: 587,
             secure: false, // true for 465, false for other ports
             auth: {
@@ -24,7 +19,7 @@ const sendEmail = async (options) => {
     } else {
         // Use provided credentials
         transporter = nodemailer.createTransport({
-            host: process.env.SMTP_HOST || 'smtp.mailtrap.io',
+            host: process.env.SMTP_HOST || 'smtp.gmail.com',
             port: process.env.SMTP_PORT || 2525,
             auth: {
                 user: process.env.EMAIL_USER,
@@ -45,7 +40,6 @@ const sendEmail = async (options) => {
     // Actually send the email
     const info = await transporter.sendMail(mailOptions);
 
-    console.log('Message sent: %s', info.messageId);
 
     // If using Ethereal, log the preview URL
     if (nodemailer.getTestMessageUrl(info)) {

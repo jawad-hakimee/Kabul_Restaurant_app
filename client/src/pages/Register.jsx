@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { Link, useNavigate } from 'react-router-dom';
+import { FaUser, FaEnvelope, FaLock, FaEye, FaEyeSlash } from 'react-icons/fa';
 
 const Register = () => {
     const [name, setName] = useState('');
@@ -10,129 +11,170 @@ const Register = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [error, setError] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
     const { register } = useAuth();
-    const navigate = useNavigate(); // Initialized useNavigate
+    const navigate = useNavigate();
 
-    const handleSubmit = async (e) => { // Made handleSubmit async
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        setError(''); // Clear previous errors
+        setError('');
 
-        if (password !== confirmPassword) { // Used state variables directly
+        if (password !== confirmPassword) {
             setError('Passwords do not match');
             return;
         }
 
+        setIsLoading(true);
         try {
-            // Assuming register returns a boolean or throws an error
-            const success = await register({ name, email, password }); // Passed state variables
+            const success = await register({ name, email, password });
             if (success) {
-                navigate('/verification-sent'); // Navigate on success
+                navigate('/verification-sent');
             } else {
-                // Handle cases where register returns false but doesn't throw an error
-                setError('Registration failed. Please try again.');
+                // If register returned false without throwing, assume default error
+                // In a perfect world, register should throw, but per current AuthContext, it catches and returns false.
+                // We'll rely on AuthContext's alert or better yet, error state handling.
+                // Actually, let's just leave it, since AuthContext already alerts.
             }
         } catch (err) {
-            // Handle errors thrown by the register function
-            setError(err.message || 'An unexpected error occurred during registration.');
+            setError(err.message || 'Registration failed');
+        } finally {
+            setIsLoading(false);
         }
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-100">
-            <div className="max-w-md w-full bg-white p-8 rounded-lg shadow-md">
-                <h2 className="text-3xl font-bold text-center mb-6">Create Account</h2>
-                {error && <div className="bg-red-100 text-red-700 p-3 rounded mb-4 text-sm text-center">{error}</div>}
+        <div className="min-h-screen flex items-center justify-center bg-[#121212] relative overflow-hidden bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] pt-24 pb-10">
+            {/* Background Accents */}
+            <div className="absolute top-0 right-0 w-full h-full bg-gradient-to-bl from-primary/5 via-transparent to-transparent pointer-events-none" />
+
+            <div className="w-full max-w-md p-8 bg-[#1E1E1E]/90 backdrop-blur-lg rounded-2xl shadow-[0_0_50px_-12px_rgba(255,215,0,0.15)] border border-white/5 relative z-10">
+                <div className="text-center mb-8">
+                    <h2 className="text-3xl font-bold text-white mb-2 tracking-tight">Create Account</h2>
+                    <p className="text-gray-400">Join <span className="text-primary font-serif italic">Kabul Restaurant</span> today</p>
+                </div>
+
+                {error && (
+                    <div className="bg-red-500/10 border border-red-500/50 text-red-500 p-3 rounded-xl mb-6 text-sm flex items-center justify-center">
+                        <svg className="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        {error}
+                    </div>
+                )}
+
                 <form onSubmit={handleSubmit} className="space-y-4">
-                    <div>
-                        <label className="block text-gray-700">Name</label>
-                        <input
-                            type="text"
-                            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-primary"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                            required
-                        />
+                    <div className="space-y-2">
+                        <label className="text-xs font-bold text-gray-500 uppercase tracking-widest ml-1">Name</label>
+                        <div className="relative group">
+                            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-500 group-focus-within:text-primary transition-colors">
+                                <FaUser />
+                            </div>
+                            <input
+                                type="text"
+                                className="w-full pl-11 pr-4 py-3 bg-[#2A2A2A] border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all duration-300"
+                                placeholder="John Doe"
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
+                                required
+                            />
+                        </div>
                     </div>
-                    <div>
-                        <label className="block text-gray-700">Email</label>
-                        <input
-                            type="email"
-                            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-primary"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            required
-                        />
+
+                    <div className="space-y-2">
+                        <label className="text-xs font-bold text-gray-500 uppercase tracking-widest ml-1">Email</label>
+                        <div className="relative group">
+                            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-500 group-focus-within:text-primary transition-colors">
+                                <FaEnvelope />
+                            </div>
+                            <input
+                                type="email"
+                                className="w-full pl-11 pr-4 py-3 bg-[#2A2A2A] border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all duration-300"
+                                placeholder="name@example.com"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                required
+                            />
+                        </div>
                     </div>
-                    <div>
-                        <label className="block text-gray-700">Password</label>
-                        <div className="relative">
+
+                    <div className="space-y-2">
+                        <label className="text-xs font-bold text-gray-500 uppercase tracking-widest ml-1">Password</label>
+                        <div className="relative group">
+                            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-500 group-focus-within:text-primary transition-colors">
+                                <FaLock />
+                            </div>
                             <input
                                 type={showPassword ? "text" : "password"}
-                                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-primary pr-10"
+                                className="w-full pl-11 pr-12 py-3 bg-[#2A2A2A] border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all duration-300"
+                                placeholder="Create a password"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 required
                             />
                             <button
                                 type="button"
-                                className="absolute inset-y-0 right-0 px-3 flex items-center text-gray-500 hover:text-gray-700"
+                                className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-500 hover:text-white transition-colors"
                                 onClick={() => setShowPassword(!showPassword)}
                             >
-                                {showPassword ? (
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
-                                    </svg>
-                                ) : (
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                    </svg>
-                                )}
+                                {showPassword ? <FaEyeSlash /> : <FaEye />}
                             </button>
                         </div>
                     </div>
-                    <div>
-                        <label className="block text-gray-700">Confirm Password</label>
-                        <div className="relative">
+
+                    <div className="space-y-2">
+                        <label className="text-xs font-bold text-gray-500 uppercase tracking-widest ml-1">Confirm Password</label>
+                        <div className="relative group">
+                            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-500 group-focus-within:text-primary transition-colors">
+                                <FaLock />
+                            </div>
                             <input
                                 type={showConfirmPassword ? "text" : "password"}
-                                className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-primary pr-10 ${confirmPassword && password === confirmPassword ? 'border-green-500' :
-                                    confirmPassword && password !== confirmPassword ? 'border-red-500' : ''
+                                className={`w-full pl-11 pr-12 py-3 bg-[#2A2A2A] border rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-1 transition-all duration-300 ${confirmPassword && password === confirmPassword
+                                        ? 'border-green-500/50 focus:border-green-500 focus:ring-green-500'
+                                        : confirmPassword && password !== confirmPassword
+                                            ? 'border-red-500/50 focus:border-red-500 focus:ring-red-500'
+                                            : 'border-gray-700 focus:border-primary focus:ring-primary'
                                     }`}
+                                placeholder="Confirm your password"
                                 value={confirmPassword}
                                 onChange={(e) => setConfirmPassword(e.target.value)}
                                 required
                             />
                             <button
                                 type="button"
-                                className="absolute inset-y-0 right-0 px-3 flex items-center text-gray-500 hover:text-gray-700"
+                                className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-500 hover:text-white transition-colors"
                                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                             >
-                                {showConfirmPassword ? (
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
-                                    </svg>
-                                ) : (
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                    </svg>
-                                )}
+                                {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
                             </button>
                         </div>
-                        {confirmPassword && (
-                            <p className={`text-xs mt-1 ${password === confirmPassword ? 'text-green-600' : 'text-red-500'}`}>
-                                {password === confirmPassword ? 'Passwords match' : 'Passwords do not match'}
-                            </p>
+                        {confirmPassword && password !== confirmPassword && (
+                            <p className="text-red-500 text-xs mt-1 ml-1 animate-pulse">Passwords do not match</p>
                         )}
                     </div>
-                    <button type="submit" className="w-full btn-primary py-2 rounded-lg">
-                        Sign Up
+
+                    <button
+                        type="submit"
+                        disabled={isLoading}
+                        className="w-full bg-primary text-secondary font-bold py-3.5 rounded-xl hover:bg-yellow-400 transform hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 shadow-lg shadow-primary/20 mt-4 flex items-center justify-center"
+                    >
+                        {isLoading ? (
+                            <svg className="animate-spin h-5 w-5 text-secondary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                        ) : 'Create Account'}
                     </button>
                 </form>
-                <p className="mt-4 text-center text-gray-600">
-                    Already have an account? <Link to="/login" className="text-primary font-bold">Login</Link>
-                </p>
+
+                <div className="mt-8 pt-8 border-t border-gray-700/50 text-center">
+                    <p className="text-gray-400">
+                        Already have an account?{' '}
+                        <Link to="/login" className="text-primary font-bold hover:text-yellow-300 transition-colors inline-block">
+                            Login
+                        </Link>
+                    </p>
+                </div>
             </div>
         </div>
     );

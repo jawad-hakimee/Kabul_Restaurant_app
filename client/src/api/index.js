@@ -14,3 +14,4 @@ export const signIn = (formData) => API.post('/users/login', formData);
 export const signUp = (formData) => API.post('/users', formData);
 export const createOrder = (orderData) => API.post('/orders', orderData);
 export const sendMessage = (messageData) => API.post('/contact', messageData);
+export const verifyUser = (token) => API.get(`/users/verify/${token}`);
