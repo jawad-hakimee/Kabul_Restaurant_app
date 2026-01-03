@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const API = axios.create({ baseURL: 'http://localhost:5000/api' });
+export const API = axios.create({ baseURL: 'https://kabul-restaurant-app.onrender.com/' });
 
 API.interceptors.request.use((req) => {
     if (localStorage.getItem('userInfo')) {
