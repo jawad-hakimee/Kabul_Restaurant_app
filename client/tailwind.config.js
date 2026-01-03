@@ -1,4 +1,3 @@
-/** @type {import('tailwindcss').Config} */
 export default {
     content: [
         "./index.html",
@@ -7,9 +6,9 @@ export default {
     theme: {
         extend: {
             colors: {
-                primary: '#FFD700', // Gold/Yellow for branding
-                secondary: '#000000', // Black
-                accent: '#F5F5F5', // Light Gray
+                primary: '#FFD700',
+                secondary: '#000000',
+                accent: '#F5F5F5',
             }
         },
     },

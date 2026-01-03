@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { createOrder } from '../api';
 
 const Cart = () => {
     const { cartItems, addToCart, decreaseQty, removeFromCart, clearCart } = useCart();
@@ -31,7 +31,6 @@ const Cart = () => {
             setDiscount(0);
             setCouponMessage({ text: 'Invalid Coupon Code', type: 'error' });
         }
-        // Clear message after 3 seconds
         setTimeout(() => setCouponMessage({ text: '', type: '' }), 3000);
     };
 
@@ -48,12 +47,7 @@ const Cart = () => {
                     price: item.price,
                     product: item._id
                 })),
-                shippingAddress: {
-                    address: '123 Test St',
-                    city: 'Kabul',
-                    postalCode: '1001',
-                    country: 'Afghanistan'
-                },
+                shippingAddress: {},
                 paymentMethod: total === 0 ? 'Waived (100% Discount)' : paymentMethod,
                 itemsPrice: itemsPrice,
                 taxPrice: 0,
@@ -61,16 +55,9 @@ const Cart = () => {
                 totalPrice: total
             };
 
-            const config = {
-                headers: {
-                    Authorization: `Bearer ${user.token}`,
-                },
-            };
-
-            await axios.post('http://localhost:5000/api/orders', orderData, config);
+            await createOrder(orderData);
 
             clearCart();
-            // alert('Order Placed Successfully!'); // Silent success
             navigate('/orders');
         } catch (error) {
             console.error(error);
@@ -91,9 +78,8 @@ const Cart = () => {
     };
 
     const handlePayment = (e) => {
-        e.preventDefault(); // Prevent form submission
+        e.preventDefault();
         setIsProcessingPayment(true);
-        // Simulate payment delay
         setTimeout(() => {
             setIsProcessingPayment(false);
             setShowPaymentModal(false);
@@ -103,7 +89,6 @@ const Cart = () => {
 
     return (
         <div className="pt-24 pb-12 px-6 max-w-7xl mx-auto relative">
-            {/* Simulated Payment Modal */}
             {showPaymentModal && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
                     <div className="bg-white p-8 rounded-xl shadow-2xl max-w-md w-full text-center">
@@ -215,7 +200,6 @@ const Cart = () => {
                         <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-100 h-fit">
                             <h2 className="text-2xl font-bold mb-6 border-b pb-2">Order Summary</h2>
 
-                            {/* Coupon Input */}
                             <div className="mb-4">
                                 <div className="flex">
                                     <input
@@ -247,7 +231,6 @@ const Cart = () => {
                                 )}
                             </div>
 
-                            {/* Payment Method Selection */}
                             {total > 0 ? (
                                 <div className="mb-6">
                                     <h3 className="font-bold mb-2">Payment Method</h3>

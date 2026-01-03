@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { API } from '../api';
 
 const MyOrders = () => {
     const { user } = useAuth();
@@ -18,14 +18,7 @@ const MyOrders = () => {
 
         const fetchOrders = async () => {
             try {
-                const config = {
-                    headers: {
-                        Authorization: `Bearer ${user.token}`,
-                    },
-                };
-
-                // Direct axios call to ensure token is passed correctly if interceptor has issues
-                const { data } = await axios.get('http://localhost:5000/api/orders/myorders', config);
+                const { data } = await API.get(`/orders/myorders?t=${Date.now()}`);
                 setOrders(data);
                 setLoading(false);
             } catch (err) {
@@ -52,7 +45,10 @@ const MyOrders = () => {
                         <div key={order._id} className="bg-white p-6 rounded-xl shadow-md border border-gray-100 flex flex-col md:flex-row justify-between items-center bg-gray-50 mb-4">
                             <div>
                                 <h3 className="font-bold text-lg mb-1">Order #{order._id.substring(0, 10)}...</h3>
-                                <p className="text-sm text-gray-500">Placed on: {new Date(order.createdAt).toLocaleDateString()}</p>
+                                <p className="text-sm text-gray-500">
+                                    Placed on: {new Date(order.createdAt).toLocaleDateString()}
+                                    <span className="ml-2 text-xs opacity-75">{new Date(order.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                                </p>
                                 <div className="mt-2">
                                     {order.orderItems.map((item, index) => (
                                         <span key={index} className="text-sm text-gray-600 block">
@@ -87,7 +83,7 @@ const MyOrders = () => {
                                     {order.status}
                                 </span>
                                 <button
-                                    onClick={() => navigate('/tracking')}
+                                    onClick={() => navigate(`/tracking/${order._id}`)}
                                     className="btn-primary text-sm px-4 py-2 shadow-sm"
                                 >
                                     Track Order

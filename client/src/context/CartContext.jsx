@@ -1,9 +1,11 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
+import { useAuth } from './AuthContext';
 
 const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
     const [cartItems, setCartItems] = useState([]);
+    const { user } = useAuth();
 
     useEffect(() => {
         const storedCart = JSON.parse(localStorage.getItem('cartItems')) || [];

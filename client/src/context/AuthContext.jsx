@@ -23,10 +23,6 @@ export const AuthProvider = ({ children }) => {
     const register = async (formData) => {
         try {
             await api.signUp(formData);
-            // Don't auto-login. Let component handle redirect to verification.
-            // setUser(data);
-            // localStorage.setItem('userInfo', JSON.stringify(data));
-            // navigate('/');
             return true;
         } catch (error) {
             console.log(error);

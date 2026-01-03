@@ -6,7 +6,6 @@ const Footer = () => {
     return (
         <footer className="bg-gray-900 text-white py-10 mt-auto">
             <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-3 gap-8">
-                {/* Brand Section */}
                 <div>
                     <h2 className="text-2xl font-bold mb-4 text-primary">Kabul Restaurant</h2>
                     <p className="text-gray-400 mb-4">
@@ -18,7 +17,6 @@ const Footer = () => {
                     </p>
                 </div>
 
-                {/* Quick Links */}
                 <div>
                     <h3 className="text-xl font-bold mb-4">Quick Links</h3>
                     <ul className="space-y-2 text-gray-400">
@@ -30,15 +28,14 @@ const Footer = () => {
                     </ul>
                 </div>
 
-                {/* Social & Contact */}
                 <div>
                     <h3 className="text-xl font-bold mb-4">Connect With Me</h3>
-                    <p className="text-gray-400 mb-4">
-                        Feel free to reach out for collaborations or inquiries.
+                    <p className="text-gray-400 mb-4 text-sm">
+                        Restaurant platform developed by <strong className="text-primary">Jawad Hakimi</strong>.
                     </p>
                     <div className="flex space-x-6">
                         <a
-                            href="https://github.com/yourusername"
+                            href="https://github.com/jawad-hakimee"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="text-gray-400 hover:text-white hover:scale-110 transition-transform text-2xl"
@@ -47,7 +44,7 @@ const Footer = () => {
                             <FaGithub />
                         </a>
                         <a
-                            href="https://linkedin.com/in/yourusername"
+                            href="https://www.linkedin.com/in/jawad-hakimi-061a512a4"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="text-gray-400 hover:text-blue-500 hover:scale-110 transition-transform text-2xl"
@@ -56,7 +53,7 @@ const Footer = () => {
                             <FaLinkedin />
                         </a>
                         <a
-                            href="https://wa.me/1234567890"
+                            href="https://wa.me/93770127606"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="text-gray-400 hover:text-green-500 hover:scale-110 transition-transform text-2xl"
@@ -65,7 +62,7 @@ const Footer = () => {
                             <FaWhatsapp />
                         </a>
                         <a
-                            href="mailto:your.email@gmail.com"
+                            href="mailto:Jawadhakimee1401@gmail.com"
                             className="text-gray-400 hover:text-red-500 hover:scale-110 transition-transform text-2xl"
                             aria-label="Email"
                         >

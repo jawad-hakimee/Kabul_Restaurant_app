@@ -6,13 +6,33 @@ import { FaEye, FaEyeSlash, FaEnvelope, FaLock } from 'react-icons/fa';
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [rememberMe, setRememberMe] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const { login } = useAuth();
     const [isLoading, setIsLoading] = useState(false);
 
+    React.useEffect(() => {
+        const savedEmail = localStorage.getItem('rememberedEmail');
+        const savedPassword = localStorage.getItem('rememberedPassword');
+        if (savedEmail && savedPassword) {
+            setEmail(savedEmail);
+            setPassword(savedPassword);
+            setRememberMe(true);
+        }
+    }, []);
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsLoading(true);
+
+        if (rememberMe) {
+            localStorage.setItem('rememberedEmail', email);
+            localStorage.setItem('rememberedPassword', password);
+        } else {
+            localStorage.removeItem('rememberedEmail');
+            localStorage.removeItem('rememberedPassword');
+        }
+
         try {
             await login({ email, password });
         } catch (error) {
@@ -77,7 +97,12 @@ const Login = () => {
 
                     <div className="flex items-center justify-between text-sm">
                         <label className="flex items-center text-gray-400 cursor-pointer hover:text-white transition-colors">
-                            <input type="checkbox" className="mr-2 rounded border-gray-700 bg-[#2A2A2A] text-primary focus:ring-primary" />
+                            <input
+                                type="checkbox"
+                                className="mr-2 rounded border-gray-700 bg-[#2A2A2A] text-primary focus:ring-primary"
+                                checked={rememberMe}
+                                onChange={(e) => setRememberMe(e.target.checked)}
+                            />
                             Remember me
                         </label>
                         <a href="#" className="text-primary hover:text-yellow-300 transition-colors">Forgot Password?</a>

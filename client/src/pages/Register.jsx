@@ -30,21 +30,17 @@ const Register = () => {
             if (success) {
                 navigate('/verification-sent');
             } else {
-                // If register returned false without throwing, assume default error
-                // In a perfect world, register should throw, but per current AuthContext, it catches and returns false.
-                // We'll rely on AuthContext's alert or better yet, error state handling.
-                // Actually, let's just leave it, since AuthContext already alerts.
+                setIsLoading(false);
             }
         } catch (err) {
             setError(err.message || 'Registration failed');
-        } finally {
             setIsLoading(false);
         }
     };
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-[#121212] relative overflow-hidden bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] pt-24 pb-10">
-            {/* Background Accents */}
+
             <div className="absolute top-0 right-0 w-full h-full bg-gradient-to-bl from-primary/5 via-transparent to-transparent pointer-events-none" />
 
             <div className="w-full max-w-md p-8 bg-[#1E1E1E]/90 backdrop-blur-lg rounded-2xl shadow-[0_0_50px_-12px_rgba(255,215,0,0.15)] border border-white/5 relative z-10">
@@ -130,10 +126,10 @@ const Register = () => {
                             <input
                                 type={showConfirmPassword ? "text" : "password"}
                                 className={`w-full pl-11 pr-12 py-3 bg-[#2A2A2A] border rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-1 transition-all duration-300 ${confirmPassword && password === confirmPassword
-                                        ? 'border-green-500/50 focus:border-green-500 focus:ring-green-500'
-                                        : confirmPassword && password !== confirmPassword
-                                            ? 'border-red-500/50 focus:border-red-500 focus:ring-red-500'
-                                            : 'border-gray-700 focus:border-primary focus:ring-primary'
+                                    ? 'border-green-500/50 focus:border-green-500 focus:ring-green-500'
+                                    : confirmPassword && password !== confirmPassword
+                                        ? 'border-red-500/50 focus:border-red-500 focus:ring-red-500'
+                                        : 'border-gray-700 focus:border-primary focus:ring-primary'
                                     }`}
                                 placeholder="Confirm your password"
                                 value={confirmPassword}

@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API = axios.create({ baseURL: 'http://localhost:5000/api' });
+export const API = axios.create({ baseURL: 'http://localhost:5000/api' });
 
 API.interceptors.request.use((req) => {
     if (localStorage.getItem('userInfo')) {
@@ -13,5 +13,6 @@ export const fetchFoodItems = () => API.get('/food');
 export const signIn = (formData) => API.post('/users/login', formData);
 export const signUp = (formData) => API.post('/users', formData);
 export const createOrder = (orderData) => API.post('/orders', orderData);
+export const fetchOrderById = (id) => API.get(`/orders/${id}`);
 export const sendMessage = (messageData) => API.post('/contact', messageData);
 export const verifyUser = (token) => API.get(`/users/verify/${token}`);

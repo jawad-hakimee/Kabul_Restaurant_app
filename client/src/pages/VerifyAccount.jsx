@@ -18,9 +18,6 @@ const VerifyAccount = () => {
                 await api.verifyUser(token);
                 setStatus('Verified');
             } catch (error) {
-                console.error(error);
-                // If the error suggests already verified (or token gone but user verified), we could handle it.
-                // But for now, just show failed. Users can try logging in if they think it worked.
                 setStatus('Failed');
             }
         };

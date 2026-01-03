@@ -27,7 +27,7 @@ function App() {
                             <Route path="/menu" element={<Menu />} />
                             <Route path="/cart" element={<Cart />} />
                             <Route path="/contact" element={<Contact />} />
-                            <Route path="/tracking" element={<Tracking />} />
+                            <Route path="/tracking/:id" element={<Tracking />} />
                             <Route path="/orders" element={<MyOrders />} />
                             <Route path="/verification-sent" element={<VerificationSent />} />
                             <Route path="/verify-account" element={<VerifyAccount />} />

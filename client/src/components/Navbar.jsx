@@ -11,16 +11,14 @@ const Navbar = () => {
     return (
         <nav className="bg-white shadow-md py-4 px-6 fixed w-full top-0 z-50">
             <div className="max-w-7xl mx-auto flex justify-between items-center">
-                <Link to="/" className="text-2xl font-extrabold text-primary tracking-tighter">Kabul<span className="text-secondary">Restaurant</span></Link>
+                <Link to="/" className="text-2xl font-extrabold text-primary tracking-tighter">Kabul<span className="text-secondary"> Restaurant</span></Link>
 
-                {/* Mobile menu button */}
                 <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="md:hidden text-gray-700 focus:outline-none">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
                     </svg>
                 </button>
 
-                {/* Desktop Menu */}
                 <div className="hidden md:flex space-x-8 text-gray-700 font-medium items-center">
                     <Link to="/" className="hover:text-primary transition">Home</Link>
                     <Link to="/menu" className="hover:text-primary transition">Menu</Link>
@@ -45,7 +43,7 @@ const Navbar = () => {
                         <div className="flex items-center space-x-3">
                             <div className="text-right hidden lg:block">
                                 <p className="text-sm font-bold leading-none">{user.name}</p>
-                                <Link to="/orders" className="text-xs text-gray-500 hover:text-primary transition">My Orders</Link>
+                                {!user.isAdmin && <Link to="/orders" className="text-xs text-gray-500 hover:text-primary transition">My Orders</Link>}
                             </div>
                             <button onClick={logout} className="text-sm font-semibold text-red-500 hover:text-red-700 border border-red-200 px-3 py-1 rounded-full hover:bg-red-50 transition">Logout</button>
                         </div>
@@ -56,21 +54,18 @@ const Navbar = () => {
                 </div>
             </div>
 
-            {/* Mobile Menu Dropdown */}
             {isMenuOpen && (
                 <div className="md:hidden mt-4 bg-white border-t p-4 space-y-4 shadow-lg rounded-b-xl">
-                    <Link to="/" className="block text-gray-700 font-medium">Home</Link>
-                    <Link to="/menu" className="block text-gray-700 font-medium">Menu</Link>
-                    <Link to="/contact" className="block text-gray-700 font-medium">Contact</Link>
-                    <Link to="/cart" className="block text-gray-700 font-medium">Cart ({cartItems.length})</Link>
                     {user ? (
                         <>
-                            <Link to="/orders" className="block text-gray-700 font-medium">My Orders</Link>
-                            <button onClick={logout} className="block w-full text-left text-red-500 font-bold">Logout</button>
+                            {user.isAdmin && <Link to="/admin" onClick={() => setIsMenuOpen(false)} className="block text-primary font-bold">Admin Panel</Link>}
+                            {!user.isAdmin && <Link to="/orders" onClick={() => setIsMenuOpen(false)} className="block text-gray-700 font-medium">My Orders</Link>}
+                            <button onClick={() => { logout(); setIsMenuOpen(false); }} className="block w-full text-left text-red-500 font-bold">Logout</button>
                         </>
                     ) : (
-                        <Link to="/login" className="block text-primary font-bold">Login</Link>
-                    )}       </div>
+                        <Link to="/login" onClick={() => setIsMenuOpen(false)} className="block text-primary font-bold">Login</Link>
+                    )}
+                </div>
             )}
         </nav>
     );

@@ -37,17 +37,21 @@ const Contact = () => {
                         </p>
                         <div className="space-y-4">
                             <p className="flex items-center space-x-3">
-                                <span className="font-bold text-primary">📍 Address:</span>
-                                <span>123 Kabul Street, Food City</span>
-                            </p>
-                            <p className="flex items-center space-x-3">
-                                <span className="font-bold text-primary">📞 Phone:</span>
-                                <span>+123 456 7890</span>
+                                <span className="font-bold text-primary">📱 WhatsApp:</span>
+                                <span>+93 770 127 606</span>
                             </p>
                             <p className="flex items-center space-x-3">
                                 <span className="font-bold text-primary">📧 Email:</span>
-                                <span>info@kabulrestaurant.com</span>
+                                <span>Jawadhakimee1401@gmail.com</span>
                             </p>
+                            <div className="pt-4 border-t border-gray-100 mt-4">
+                                <h3 className="font-bold mb-3">Connect with Jawad Hakimi</h3>
+                                <div className="flex space-x-4">
+                                    <a href="https://github.com/jawad-hakimee" target="_blank" rel="noopener noreferrer" className="text-secondary hover:text-primary transition font-semibold">GitHub</a>
+                                    <span className="text-gray-300">|</span>
+                                    <a href="https://www.linkedin.com/in/jawad-hakimi-061a512a4" target="_blank" rel="noopener noreferrer" className="text-secondary hover:text-primary transition font-semibold">LinkedIn</a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <form onSubmit={handleSubmit} className="space-y-4">
