@@ -2,17 +2,22 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
-
-dotenv.config();
+const path = require('path');
+dotenv.config({ path: path.resolve(__dirname, '.env') });
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Middleware
 app.use(cors());
 app.use(express.json());
 
-// Database Connection
+app.use((req, res, next) => {
+  if (req.method === 'GET') {
+    res.set('Cache-Control', 'public, max-age=3600');
+  }
+  next();
+});
+
 mongoose.connect(process.env.MONGODB_URI)
   .then(() => console.log('MongoDB Connected'))
   .catch(err => console.error('MongoDB Connection Error:', err));
@@ -29,6 +34,18 @@ app.use('/api/contact', contactRoutes);
 
 app.get('/', (req, res) => {
   res.send('Kabul Restaurant API is running');
+});
+
+app.use((req, res) => {
+  res.status(404).json({ message: 'Route Not Found' });
+});
+
+app.use((err, req, res, next) => {
+  console.error('SERVER_ERROR:', err.stack);
+  res.status(500).json({
+    message: err.message || 'Internal Server Error',
+    stack: process.env.NODE_ENV === 'production' ? null : err.stack,
+  });
 });
 
 app.listen(PORT, () => {

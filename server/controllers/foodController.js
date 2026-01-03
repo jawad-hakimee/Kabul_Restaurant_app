@@ -1,16 +1,10 @@
 const FoodItem = require('../models/FoodItem.js');
 
-// @desc    Fetch all food items
-// @route   GET /api/food
-// @access  Public
 const getFoodItems = async (req, res) => {
     const foodItems = await FoodItem.find({});
     res.json(foodItems);
 };
 
-// @desc    Fetch single food item
-// @route   GET /api/food/:id
-// @access  Public
 const getFoodItemById = async (req, res) => {
     const foodItem = await FoodItem.findById(req.params.id);
 
@@ -21,9 +15,6 @@ const getFoodItemById = async (req, res) => {
     }
 };
 
-// @desc    Create a food item
-// @route   POST /api/food
-// @access  Private/Admin
 const createFoodItem = async (req, res) => {
     const { name, description, price, category, image } = req.body;
 
@@ -39,9 +30,6 @@ const createFoodItem = async (req, res) => {
     res.status(201).json(createdFoodItem);
 };
 
-// @desc    Update a food item
-// @route   PUT /api/food/:id
-// @access  Private/Admin
 const updateFoodItem = async (req, res) => {
     const { name, description, price, category, image, isAvailable } = req.body;
 
@@ -62,9 +50,6 @@ const updateFoodItem = async (req, res) => {
     }
 };
 
-// @desc    Delete a food item
-// @route   DELETE /api/food/:id
-// @access  Private/Admin
 const deleteFoodItem = async (req, res) => {
     const foodItem = await FoodItem.findById(req.params.id);
 

@@ -1,8 +1,5 @@
 const Message = require('../models/Message.js');
 
-// @desc    Create new message
-// @route   POST /api/contact
-// @access  Public
 const createMessage = async (req, res) => {
     const { name, email, message } = req.body;
 

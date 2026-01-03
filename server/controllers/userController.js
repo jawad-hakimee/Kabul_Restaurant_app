@@ -4,9 +4,6 @@ const sendEmail = require('../utils/sendEmail.js');
 
 const crypto = require('crypto');
 
-// @desc    Auth user & get token
-// @route   POST /api/users/login
-// @access  Public
 const authUser = async (req, res) => {
     try {
         const { email, password } = req.body;
@@ -34,9 +31,6 @@ const authUser = async (req, res) => {
     }
 };
 
-// @desc    Register a new user
-// @route   POST /api/users
-// @access  Public
 const registerUser = async (req, res) => {
     try {
         const { name, email, password } = req.body;
@@ -58,7 +52,6 @@ const registerUser = async (req, res) => {
         });
 
         if (user) {
-            // Send verification email
             try {
                 const verificationUrl = `http://localhost:5173/verify-account?token=${verificationToken}`;
                 await sendEmail({
@@ -74,7 +67,6 @@ const registerUser = async (req, res) => {
                 });
             } catch (error) {
                 console.error('Email send failed:', error);
-                // Continue even if email fails, but ideal to warn user or retry
             }
 
             res.status(201).json({
@@ -89,9 +81,6 @@ const registerUser = async (req, res) => {
     }
 };
 
-// @desc    Verify user account
-// @route   GET /api/users/verify/:token
-// @access  Public
 const verifyUser = async (req, res) => {
     try {
         const { token } = req.params;
